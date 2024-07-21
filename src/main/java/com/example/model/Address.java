@@ -1,10 +1,9 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
@@ -22,32 +21,18 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "post_office_id")
+    @JsonIgnore
     private PostOffice postOffice;
 
     @ManyToOne
     @JoinColumn(name = "postal_shipment_id")
+    @JsonIgnore
     private PostalShipment postalShipment;
-
-//    public Address(String address) {
-//        this.address = address;
-//    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address1 = (Address) o;
-        return Objects.equals(addressId, address1.addressId) && Objects.equals(address, address1.address);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(addressId, address);
-    }
 
     public Address() {
     }

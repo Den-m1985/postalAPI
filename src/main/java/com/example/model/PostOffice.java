@@ -1,13 +1,10 @@
 package com.example.model;
 
-import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.Collection;
 
 @Entity
 @Table(name = "post_office")
@@ -32,23 +29,13 @@ public class PostOffice {
     @JoinColumn(name = "address_id")
     private Address postOfficeAddress;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostOffice that = (PostOffice) o;
-        return Objects.equals(postOfficeId, that.postOfficeId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(postOfficeId);
-    }
+    @ManyToMany
+    @JoinTable(name = "employee_task",
+            joinColumns = @JoinColumn(name = "post_office_id", referencedColumnName = "post_office_id"),
+            inverseJoinColumns = @JoinColumn(name = "postal_shipment_id", referencedColumnName = "postal_shipment_id"))
+    private Collection<PostalShipment> PostalShipmentArray;
 
     public PostOffice() {
     }
+
 }

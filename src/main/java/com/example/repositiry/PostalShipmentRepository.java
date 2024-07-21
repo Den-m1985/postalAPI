@@ -10,6 +10,9 @@ import java.util.Optional;
 @Repository
 public interface PostalShipmentRepository extends JpaRepository<PostalShipment, String> {
 
+    /**
+     * @return  PostalShipment by id
+     */
     Optional<PostalShipment> findByPostalShipmentId(String postalShipmentId);
 
 }

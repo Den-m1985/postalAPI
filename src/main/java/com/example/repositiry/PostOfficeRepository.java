@@ -8,10 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface PostOfficeRepository extends JpaRepository<PostOffice, String> {
+
     /**
-     * Selects a user by his name.
-     * @return
+     * @return  PostOffice by id
      */
-    //Optional<PostOffice> findByIndex(String index);
+    Optional<PostOffice> findById(String postOfficeId);
 
 }

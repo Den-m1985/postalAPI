@@ -1,9 +1,12 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,23 +30,13 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    //    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
-//    private Set<Address> address = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Address> address = new HashSet<>();
+    @JsonIgnore
+    private Collection<Address> address = new ArrayList<>();
 
-    //    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "postal_shipment_id")
-//    private Set<PostalShipment> postalShipments = new HashSet<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PostalShipment> postalShipments = new HashSet<>();
-
-    //    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "post_office_id")
-//    private Set<PostOffice> postOffices = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<PostOffice> postOffices = new HashSet<>();
 
     public User() {
     }

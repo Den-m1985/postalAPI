@@ -28,6 +28,12 @@ public class PostalShipment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany
+    @JoinTable(name = "employee_task",
+            joinColumns = @JoinColumn(name = "postal_shipment_id", referencedColumnName = "postal_shipment_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_office_id", referencedColumnName = "post_office_id"))
+    private Collection<PostOffice> postOfficeTrack;
+
     @ManyToOne
     @JoinColumn(name = "post_office_send_id", referencedColumnName = "post_office_id")
     private PostOffice postOfficeSend;
@@ -38,11 +44,11 @@ public class PostalShipment {
 
     @Column(nullable = false, name = "postal_status")
     @Enumerated(EnumType.STRING)
-    private Collection<PostalStatus> postalStatus;
+    private PostalStatus postalStatus;
 
     @Column(nullable = false, name = "postal_type")
     @Enumerated(EnumType.STRING)
-    private Collection<PostalType> postalType;
+    private PostalType postalType;
 
     @Override
     public boolean equals(Object o) {

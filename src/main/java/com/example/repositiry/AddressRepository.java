@@ -10,6 +10,9 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, String> {
 
+    /**
+     * @return  Address by id
+     */
     Optional<Address> findByAddress(String address);
 
 }
