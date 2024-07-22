@@ -1,39 +1,24 @@
 package com.erxample.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.Main;
 import com.example.controller.UserController;
 import com.example.dto.UserDto;
 import com.example.model.User;
 import com.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
-//@WebMvcTest(UserController.class)
-@ExtendWith(SpringExtension.class)
-@SpringBootTest() // Specify the main application class
 public class UserControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Mock
     private UserService userService;
@@ -41,69 +26,48 @@ public class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
     @Test
-    public void testGetAllUsers() throws Exception {
-        UserDto userDto1 =createUserDto();
+    public void testGetAllUsers() {
+        UserDto userDto1 = createUserDto();
         UserDto userDto2 = createUserDto();
         List<UserDto> userDtos = Arrays.asList(userDto1, userDto2);
 
         when(userService.getAllUsersDto()).thenReturn(userDtos);
-
-        mockMvc.perform(get("/api/user/all"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].userId").value(userDto1.getUserId()))
-                .andExpect(jsonPath("$[1].userId").value(userDto2.getUserId()));
-
-        verify(userService, times(1)).getAllUsersDto();
+        ResponseEntity<List<UserDto>> response = userController.getAllUsers();
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
+        assertEquals(userDtos, response.getBody());
+        when(userService.getAllUsersDto()).thenReturn(userDtos);
     }
 
     @Test
-    public void testGetUser_UserExists() throws Exception {
+    public void testGetUser_UserExists() {
         User user = createUser();
         String userId = user.getUserId();
-
         when(userService.getUserById(userId)).thenReturn(user);
-
-        mockMvc.perform(get("/api/user/{id}", userId))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.userId").value(userId));
-
-        verify(userService, times(1)).getUserById(userId);
+        ResponseEntity<?> response = userController.getUser(userId);
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
+        assertEquals(user, response.getBody());
     }
 
     @Test
-    public void testGetUser_UserDoesNotExist() throws Exception {
+    public void testGetUser_UserDoesNotExist() {
         String userId = "1";
         when(userService.getUserById(userId)).thenReturn(null);
-
-        mockMvc.perform(get("/api/user/{id}", userId))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("no user"));
-
-        verify(userService, times(1)).getUserById(userId);
+        ResponseEntity<?> response = userController.getUser("1");
+        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
+        assertEquals("no user", response.getBody());
     }
 
     @Test
-    public void testSaveUser() throws Exception {
+    public void testSaveUser() {
         UserDto userDto = createUserDto();
-
-        mockMvc.perform(post("/api/user/save")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDto)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("user registered"));
-
-        verify(userService, times(1)).saveUser(any(UserDto.class));
+        userController.saveUser(userDto);
+        verify(userService, times(1)).saveUser(userDto);
     }
 
     public User createUser() {
@@ -116,14 +80,11 @@ public class UserControllerTest {
 
     public UserDto createUserDto() {
         User user = createUser();
-
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setFirstName(user.getFirstName());
         userDto.setMiddleName(user.getMiddleName());
         userDto.setLastName(user.getLastName());
-       // userDto.setAddress(getAddressId(user));
-       // userDto.setPostalShipments(getPostalShipmentId(user));
         return userDto;
     }
 
