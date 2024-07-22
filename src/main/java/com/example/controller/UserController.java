@@ -42,7 +42,7 @@ public class UserController {
      * @return ok if User save to DB
      */
     @PostMapping("/save")
-    public ResponseEntity<String> login(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> saveUser(@RequestBody UserDto userDto) {
         userService.saveUser(userDto);
         return ResponseEntity.ok("user registered");
     }
