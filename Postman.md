@@ -1,5 +1,5 @@
 ### User
-[UserController](./src/main/java/com/example/Controller/UserController.java)
+[UserController](./src/main/java/com/example/controller/UserController.java)
 ~~~url
 GET localhost:8000/api/user/all
 GET localhost:8000/api/user/ {some id}
@@ -14,7 +14,7 @@ POST localhost:8000/api/user/save
 }
 ~~~
 ### Address
-[AddressController](./src/main/java/com/example/Controller/AddressController.java)
+[AddressController](./src/main/java/com/example/controller/AddressController.java)
 ~~~url
 GET localhost:8000/api/address/all
 GET localhost:8000/api/address/ {some id}
@@ -27,7 +27,7 @@ POST localhost:8000/api/address/save
 }
 ~~~
 ### PostalShipment
-[PostalShipmentController](./src/main/java/com/example/Controller/PostalShipmentController.java)
+[PostalShipmentController](./src/main/java/com/example/controller/PostalShipmentController.java)
 ~~~url
 GET localhost:8000/api/postalshipment/all
 GET localhost:8000/api/postalshipment/ {some id}
@@ -44,7 +44,7 @@ POST localhost:8000/api/postalshipment/save
 }
 ~~~
 ### PostOffice
-[PostOfficeController](./src/main/java/com/example/Controller/PostOfficeController.java)
+[PostOfficeController](./src/main/java/com/example/controller/PostOfficeController.java)
 ~~~url
 GET localhost:8000/api/postoffice/all
 GET localhost:8000/api/postoffice/ {some id}
