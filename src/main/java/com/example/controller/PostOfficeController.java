@@ -35,7 +35,7 @@ public class PostOfficeController {
         if (postOffice != null) {
             return ResponseEntity.ok(postOffice);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no postalShipment");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no post office");
         }
     }
 
@@ -43,7 +43,7 @@ public class PostOfficeController {
      * @return ok if PostOffice save to DB
      */
     @PostMapping("/save")
-    public ResponseEntity<String> login(@RequestBody PostOfficeDto postOfficeDto) {
+    public ResponseEntity<String> savePostOffice(@RequestBody PostOfficeDto postOfficeDto) {
         postOfficeService.savePostOffice(postOfficeDto);
         return ResponseEntity.ok("post office registered");
     }

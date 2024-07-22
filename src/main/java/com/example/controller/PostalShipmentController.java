@@ -43,7 +43,7 @@ public class PostalShipmentController {
      * @return ok if PostalShipment save to DB
      */
     @PostMapping("/save")
-    public ResponseEntity<String> login(@RequestBody PostalShipmentDto postalShipmentDto) {
+    public ResponseEntity<String> savePostalShipment(@RequestBody PostalShipmentDto postalShipmentDto) {
         postalShipmentService.savePostalShipment(postalShipmentDto);
         return ResponseEntity.ok("postal shipment registered");
     }

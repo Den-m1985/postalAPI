@@ -30,7 +30,7 @@ public class AddressController {
      * @return address by id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPostalShipment(@PathVariable String id) {
+    public ResponseEntity<?> getAddressById(@PathVariable String id) {
         Address address = addressService.getAddressById(id);
         if (address != null) {
             return ResponseEntity.ok(address);
@@ -43,7 +43,7 @@ public class AddressController {
      * @return ok if address save to DB
      */
     @PostMapping("/save")
-    public ResponseEntity<String> login(@RequestBody AddressDto addressDto) {
+    public ResponseEntity<String> saveAddress(@RequestBody AddressDto addressDto) {
         addressService.saveAddress(addressDto);
         return ResponseEntity.ok("address registered");
     }
